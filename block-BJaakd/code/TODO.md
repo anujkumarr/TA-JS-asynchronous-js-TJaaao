@@ -19,7 +19,7 @@
 4. What will be the output of the code below.
 
 ```js
-console.log('A');
+console.log('A');// 
 
 // Asynchronous code finises in 0 seconds (Callback Queue)
 setTimeout(() => console.log('B'), 0); // callback queue
@@ -27,7 +27,16 @@ setTimeout(() => console.log('B'), 0); // callback queue
 // A promise that resolves right away (Microtask Queue)
 Promise.resolve().then(() => console.log('C'));
 
-console.log('D');
+console.log('D'); // 
+
+///JS
+0ms A;
+1ms D;
+2ms C;
+3ms B;
+
+///
+
 ```
 
 5. Write a function named `wait` that accepts `time` in ms returns a promise. The promise gets resolved after given time.
