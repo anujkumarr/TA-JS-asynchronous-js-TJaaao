@@ -49,15 +49,20 @@ let number = new Promise((resolve, reject) => {
 
  // Q.7
  
-let str = new Promise((resolve) => {
+let str = new Promise((resolve,reject) => {
   resolve(["A"]);
 
 })
   .then((value) => {
+    console.log(value);
     return value.concat("B");
   })
-  .then(() => {
-    return { 0: 'A', 1: 'B' };
+  .then((value) => {
+    return value.reduce((acc, cv, i) => {
+      acc[i] = cv;
+      console.log(acc);
+      return acc;
+    }, {})
   })
   .then((value) => {
     console.log(value);
@@ -67,25 +72,49 @@ let str = new Promise((resolve) => {
 
 let first = new Promise((resolve) => {
   resolve(1);
-})
-  .then((value) => {
+});
+first.then((value) => {
+  console.log(value);
     return 2;
   })
   .then((value) => {
     console.log(value);
-  })
-  .then((value) => {
     return 3;
   })
   .then((value) => {
     console.log(value);
-  })
-  .then((value) => {
     return 4;
   })
   .then((value) => {
     console.log(value);
   });
+
+
+//  Q.9
+
+let first = new Promise((resolve) => {
+  resolve(1);
+});
+first
+  .then((value) => {
+    console.log(value);
+    return 2;
+  })
+  first.then((value) => {
+    console.log(value);
+    return 3;
+  })
+  first.then((value) => {
+    console.log(value);
+    return 4;
+  })
+  .then((value) => {
+    console.log(value);
+  });
+
+ // Q.10 
+ 
+  
 
 // Q.11
 
@@ -98,6 +127,7 @@ let data = new Promise((resolve, reject) => {
     })
   })
   .then((value) => {
+    console.log(value)
     return new Promise((resolve) => {
       setTimeout(() => resolve("Bran"), 2000)
     })
