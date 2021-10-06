@@ -33,6 +33,16 @@ let four = new Promise((res, rej) => {
 let all = Promise.all([one, two, three, four]).then((res) => console.log(res))
   .catch((error) => console.log(error));
 
+// after feedback
+
+let times = [1, 2, 3, 4];
+let timesPromise = times.map((second) => new Promise((res) => {
+  setTimeout(() => {
+   res(Math.random()) 
+  }, second * 1000);
+}))
+
+Promise.all(timesPromise).then(console.log)
 //2
 
 const userName = ["anujkumarr", "nnnkit", "prank7", "getify", "abhishek-s-rathore"];
@@ -67,4 +77,8 @@ const three = new Promise((resolve, reject) =>
 Promise.allSettled([one, two, three]).then(res => console.log(res));
 
 // 5
+
+"Arya"; //1 sec
+"Sam"; //1.1 sec
+"John" //1.2 sec
 
