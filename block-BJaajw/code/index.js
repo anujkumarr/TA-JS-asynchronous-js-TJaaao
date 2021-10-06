@@ -1,7 +1,22 @@
 let select = document.getElementById('source');
-let UnorderdList = document.querySelector('ul');
+const UnorderdList = document.querySelector('ul');
+let main = document.querySelector(".main");
+let errorElm = document.querySelector(".error-message");
 let allNews = [];
 let url = `https://api.spaceflightnewsapi.net/v3/articles?_limit=30`;
+
+
+function handleErrorMessage(message = "something went wrong X") {
+  main.style.display = "none";
+  errorElm.style.display = "block";
+  errorElm.innerText = message;
+}
+
+function handleSpinner(status = false) {
+  if (status) {
+    UnorderdList.innerHTML = `<div class="donut"></div>`;
+  }
+}
 
 function renderNews(news) {
   UnorderdList.innerHTML = '';
@@ -42,20 +57,32 @@ function displayOptions(sources) {
   });
 }
 
-fetch(url)
-  .then((res) => res.json())
-  .then((news) => {
-    if (Array.isArray(news)) {
+function init() {
+  handleSpinner(true); 
+  fetch(url)
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error("Response not ok!");
+      }
+    })
+    .then((news) => {
+      handleSpinner(); 
       allNews = news;
       renderNews(news);
 
       let allSources = Array.from(new Set(news.map((n) => n.newsSite)));
       displayOptions(allSources);
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+    })
+    .catch((error) => {
+      handleErrorMessage(error);
+    })
+    .finally(() => {
+      handleSpinner();
+    })
+}
+
 
 select.addEventListener('change', (event) => {
   let source = event.target.value.trim();
@@ -69,3 +96,10 @@ select.addEventListener('change', (event) => {
   }
   renderNews(filteredNews);
 });
+
+if (navigator.onLine) {
+  init();
+} else {
+  handleErrorMessage('Check Your Internet Connection ❌!');
+}
+
